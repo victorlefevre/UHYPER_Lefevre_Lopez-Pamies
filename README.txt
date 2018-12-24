@@ -1,6 +1,5 @@
 !**********************************************************************
-! Legal notice: UHYPER_Lefevre_Lopez-Pamies.for (Windows) and 
-!               UHYPER_Lefevre_Lopez-Pamies.f (Linux)
+! Legal notice: UHYPER_Lefevre_Lopez-Pamies.for (Windows) 
 !
 ! Copyright (C) 2018 Victor Lefèvre (victor.lefevre@northwestern.edu)
 !                    Oscar Lopez-Pamies (pamies@illinois.edu)
@@ -32,7 +31,7 @@
 ! GNU General Public License for more details.
 !
 ! You should have received a copy of the GNU General Public License
-! along with this program.  If not, see https://www.gnu.org/licenses/.
+! along with this program.  If not, see https://www.gnu.org/licenses/
 !
 !**********************************************************************
 ! Usage:
@@ -60,9 +59,10 @@
 !
 ! The two material parameters AMU1, AMU2 characterizing the elastic    
 ! behavior of the underlying elastomer are non-negative real numbers 
-! (AMU1 >= 0, AMU2 >= 0). The two exponents ALPHA1, ALPHA2 are real 
-! numbers leading to a strongly elliptic strain energy (see eq. (22)
-! in [2]). This is left to the user to check.
+! (AMU1 >= 0, AMU2 >= 0) with strictly positive sum (AMU1 + AMU2 > 0). 
+! The two exponents ALPHA1, ALPHA2 are non-zero real numbers 
+! (ALPHA1 > 0, ALPHA2 > 0) leading to a strongly elliptic strain 
+! energy (see eq. (22) in [2]). This is left to the user to check.
 !
 ! The volume fractions of particles (ACP), interphases (ACI), and
 ! and occluded rubber (ACO) must satisfy 0 <= ACP + ACI + ACO <= 1.
@@ -83,8 +83,8 @@
 !  ACI     = PROPS(6)  ! VOLUME FRACTION OF INTERPHASE 
 !  ACO     = PROPS(7)  ! VOLUME FRACTION OF OCCLUDED RUBBER
 !
-! These 7 material properties are subjected to restrictions listed
-! above.
+! These 7 material properties are subjected to the same restrictions 
+! listed above.
 !
 !**********************************************************************
 ! Additional information:

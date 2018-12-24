@@ -1,5 +1,5 @@
 !**********************************************************************
-! Legal notice: UHYPER_Lefevre_Lopez-Pamies.for (Windows) 
+! Legal notice: UHYPER_Lefevre_Lopez-Pamies.f (Linux) 
 !
 ! Copyright (C) 2018 Victor Lefèvre (victor.lefevre@northwestern.edu)
 !                    Oscar Lopez-Pamies (pamies@illinois.edu)
@@ -31,7 +31,7 @@
 ! GNU General Public License for more details.
 !
 ! You should have received a copy of the GNU General Public License
-! along with this program.  If not, see https://www.gnu.org/licenses/.
+! along with this program.  If not, see https://www.gnu.org/licenses/
 !
 !**********************************************************************
 ! Usage:
@@ -59,9 +59,10 @@
 !
 ! The two material parameters AMU1, AMU2 characterizing the elastic    
 ! behavior of the underlying elastomer are non-negative real numbers 
-! (AMU1 >= 0, AMU2 >= 0). The two exponents ALPHA1, ALPHA2 are real 
-! numbers leading to a strongly elliptic strain energy (see eq. (22)
-! in [2]). This is left to the user to check.
+! (AMU1 >= 0, AMU2 >= 0) with strictly positive sum (AMU1 + AMU2 > 0). 
+! The two exponents ALPHA1, ALPHA2 are non-zero real numbers 
+! (ALPHA1 > 0, ALPHA2 > 0) leading to a strongly elliptic strain 
+! energy (see eq. (22) in [2]). This is left to the user to check.
 !
 ! The volume fractions of particles (ACP), interphases (ACI), and
 ! and occluded rubber (ACO) must satisfy 0 <= ACP + ACI + ACO <= 1.
@@ -82,8 +83,8 @@
 !  ACI     = PROPS(6)  ! VOLUME FRACTION OF INTERPHASE 
 !  ACO     = PROPS(7)  ! VOLUME FRACTION OF OCCLUDED RUBBER
 !
-! These 7 material properties are subjected to restrictions listed
-! above.
+! These 7 material properties are subjected to the same restrictions 
+! listed above.
 !
 !**********************************************************************
 ! Additional information:
@@ -192,11 +193,24 @@
 !
 !     PARTIAL MATERIAL PARAMETERS CHECKS
 !  
-      IF (((AMU1.LT.0.).OR.(AMU2.LT.0.)).AND.(MYTHREADID.EQ.0)) THEN
+      IF (((AMU1.LT.0.).OR.(AMU2.LT.0.).OR.(AMU1+AMU2.LE.0.))
+     1 .AND.(MYTHREADID.EQ.0)) THEN
         REALV(1)=AMU1      
-        REALV(2)=AMU1      
-        STRING1='RECEIVED AMU1 = %R AND AMU2 = %R.'
-        STRING2=' THE PARAMETERS AMU1 AND AMU2 MUST BE NON-NEGATIVE.'
+        REALV(2)=AMU2      
+        REALV(3)=AMU1+AMU2      
+        STRING1='RECEIVED AMU1 = %R AND AMU2 = %R, AMU1 + AMU2 = %R.'
+        STRING2=' THE PARAMETERS AMU1 AND AMU2 MUST BE NON-NEGATIVE'
+        STRING3=' AND AMU1 + AMU2, MUST BE GREATER THAT ZERO.'
+        STRING = TRIM(STRING1) // TRIM(STRING2) // TRIM(STRING3)
+        CALL STDB_ABQERR(-3,STRING,INTV,REALV,CHARV)
+      END IF           
+!      
+      IF (((ALPHA1.EQ.0.).OR.(ALPHA2.EQ.0.)).AND.
+     1 (MYTHREADID.EQ.0)) THEN
+        REALV(1)=ALPHA1      
+        REALV(2)=ALPHA2      
+        STRING1='RECEIVED ALPHA1 = %R AND ALPHA2 = %R.'
+        STRING2=' THE EXPONENTS ALPHA1 AND ALPHA2 MUST BE NON-ZERO.'
         STRING = TRIM(STRING1) // TRIM(STRING2)
         CALL STDB_ABQERR(-3,STRING,INTV,REALV,CHARV)
       END IF             
@@ -266,7 +280,7 @@
       DPSI = AP1*AII1**(ALPHA1-1.)+AP2*AII1**(ALPHA2-1.)
 !     
       DDPSI = AP1*(ALPHA1-1.)*AII1**(ALPHA1-2.)+
-     1        AP2*(ALPHA2-1.)*AII1**(ALPHA2-2.)   
+     1        AP2*(ALPHA2-1.)*AII1**(ALPHA2-2.)  
 !
 !     MACROSCOPIC STRAIN ENERGY DENSITY FUNCTION FOR
 !     FILLED ELASTOMER [1,3,4]
