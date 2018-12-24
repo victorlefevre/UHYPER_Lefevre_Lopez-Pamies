@@ -55,13 +55,13 @@
 !  ACP     = PROPS(5)  ! VOLUME FRACTION OF PARTICLES 
 !  ACI     = PROPS(6)  ! VOLUME FRACTION OF INTERPHASE 
 !  ACO     = PROPS(7)  ! VOLUME FRACTION OF OCCLUDED RUBBER 
-!  AMUT    = PROPS(8)  ! INITIAL SHEAR MODULUS OF FILLED ELASTOMER 
+!  AMUT    = PROPS(8)  ! INITIAL SHEAR MODULUS OF FILLED ELASTOMER
 !
 ! The two material parameters AMU1, AMU2 characterizing the elastic    
 ! behavior of the underlying elastomer are non-negative real numbers 
 ! (AMU1 >= 0, AMU2 >= 0) with strictly positive sum (AMU1 + AMU2 > 0). 
 ! The two exponents ALPHA1, ALPHA2 are non-zero real numbers 
-! (ALPHA1 > 0, ALPHA2 > 0) leading to a strongly elliptic strain 
+! (ALPHA1 ≠ 0, ALPHA2 ≠ 0) leading to a strongly elliptic strain 
 ! energy (see eq. (22) in [2]). This is left to the user to check.
 !
 ! The volume fractions of particles (ACP), interphases (ACI), and
